@@ -1,0 +1,91 @@
+<!-- Obvious thing to do is have typeahead search for area name. Maybe a checkbox for geographies
+As well as displaying the shape coordinates for the chosen area, could also include SPARQL query used --> 
+<!DOCTYPE html>
+<head>
+  <title>Boundary shapes</title>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.min.js"></script>
+<!--  <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.min.js"></script> -->
+  <script src="./www/rdf.js"></script>
+  
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" >
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/tokenfield-typeahead.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" />
+  <link rel="stylesheet" href="./www/houseStyle.css" />
+   
+<!-- BOOTSTRAP -->  
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+  integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+  crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+  integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+  crossorigin=""></script>
+
+
+</head>
+<body>
+ <h1> Northern Ireland Boundary Names and Shapes  </h1>
+	  
+
+<nav class="navbar navbar-expand-lg navbar-nisra">
+  
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link active" href="./index.html"> Areas <span class="sr-only">(current)</span></a>
+	  <a class="nav-item nav-link" href="./shapes.html"> Types </a>
+		</div>
+		</div>
+</nav>
+
+ <label for="nameInput">Area</label>
+<div class="input-group mb-3 input-group-lg col-md-6">
+  <input id="nameInput" type="text" class="form-control" placeholder="Enter an Area Name" aria-describedby="sizing-addon1">
+  </div>
+  <br/>
+  
+ 
+  <label for="areaName">Name</label>
+  <div id="areaName"></div>
+  <label for="areaType">Type</label>
+  <div id="areaType"></div>
+    <label for="areaCode">Code</label>
+  <div id="areaCode"></div>
+  <label for="areaParent">Parent</label>
+  <div id="areaParent"></div>
+    <label for="areaChildren">Children</label>
+  <div id="areaChildren"></div>
+  <label id="landHectares" for="areaLand"></label>
+  <div id="areaLand"></div>
+  <label id="inlandWaterHectares" for="areaWater"></label>
+  <div id="areaWater"></div>
+    <label id="Gender0" for="areaPop0"></label>
+  <div id="areaPop0"></div>
+  <label id="Gender1" for="areaPop1"></label>
+  <div id="areaPop1"></div>
+  <label id="Gender2" for="areaPop2"></label>
+  <div id="areaPop2"></div>
+  
+      <div style="height: 280px" id="map"></div>
+  
+    <label for="areaPoly">Polygon</label>
+  <div id="areaPoly"></div>
+  
+  <label for="query" >SPARQL query</label>
+  <div id="query"></div>
+  <div><a href="http://linked.nisra.gov.uk/sparql-beta" target="_blank">Try SPARQL yourself</a></div>
+   
+</body>
