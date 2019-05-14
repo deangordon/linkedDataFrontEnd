@@ -9,5 +9,5 @@ It consists of 2 HTML pages, each of which accesses data from [http://linked.nis
 
 In both cases, the SPARQL query used to get the data from [http://linked.nisra.gov.uk](http://linked.nisra.gov.uk) is included, along with a link to the interactive SPARQL query builder. 
 
-It is built with JQuery, Bootstrap and uses leaflet maps.
+It is built with JQuery, Bootstrap and uses leaflet maps. These resources are supplied by CDNs, and it should run locally if you download the files
  
