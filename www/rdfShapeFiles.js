@@ -61,7 +61,7 @@ function DisplayQueryResults(e){
 				areaType = data.results.bindings[i].type.value
 				areaCode = data.results.bindings[i].code.value
 				areaPoly = data.results.bindings[i].poly.value
-				
+			
 				multi = areaPoly.search("MULTIPOLYGON")
 				var geoType = "Polygon"
 				if (multi == 0){
@@ -116,33 +116,45 @@ function DisplayQueryResults(e){
 					holes = holes + ",[" + holeCoords + "]"
 				}
 				
+				////////////				
+			// Get centroid of each polygon
+			//var bounds = L.polygon(JSON.parse(shapeData).features[0].geometry.coordinates).getBounds()
+			jsonCoords_x = jsonCoords.replace(")","").replace("(","")
+//			console.log(JSON.parse("[[["+jsonCoords+"]]]"))
+
+			var bounds = L.polygon(JSON.parse("[[["+jsonCoords_x+"]]]")).getBounds()
+			var center = bounds.getCenter()
+			lat = center.lat
+			lng = center.lng
+////////////	
+				
 				if (i == data.results.bindings.length - 1){
 					if (geoType == "MultiPolygon")
 					{
-						shapeSection = shapeSection + "{\"type\":\"Feature\",\"id\":\""+areaCode+"\",\"properties\":{\"name\":\""+areaName+"\" },\"geometry\":{\"type\":\""+ geoType +"\",\"coordinates\":[[["+jsonCoords+"]"+ holes +"]]}}";
+						shapeSection = shapeSection + "{\"type\":\"Feature\",\"id\":\""+areaCode+"\",\"properties\":{\"name\":\""+areaName+"\" ,\"center\":["+lat+","+lng+"]},\"geometry\":{\"type\":\""+ geoType +"\",\"coordinates\":[[["+jsonCoords+"]"+ holes +"]]}}";
 					}
 					else{
-						shapeSection = shapeSection + "{\"type\":\"Feature\",\"id\":\""+areaCode+"\",\"properties\":{\"name\":\""+areaName+"\" },\"geometry\":{\"type\":\""+ geoType +"\",\"coordinates\":[["+jsonCoords+"]]}}";
+						shapeSection = shapeSection + "{\"type\":\"Feature\",\"id\":\""+areaCode+"\",\"properties\":{\"name\":\""+areaName+"\" ,\"center\":["+lat+","+lng+"]},\"geometry\":{\"type\":\""+ geoType +"\",\"coordinates\":[["+jsonCoords+"]]}}";
 					}
 				}
 				else{
 					if (geoType == "MultiPolygon")
 					{
-						shapeSection = shapeSection + "{\"type\":\"Feature\",\"id\":\""+areaCode+"\",\"properties\":{\"name\":\""+areaName+"\" },\"geometry\":{\"type\":\""+ geoType +"\",\"coordinates\":[[["+jsonCoords+"]"+ holes +"]]}},";
+						shapeSection = shapeSection + "{\"type\":\"Feature\",\"id\":\""+areaCode+"\",\"properties\":{\"name\":\""+areaName+"\" ,\"center\":["+lat+","+lng+"]},\"geometry\":{\"type\":\""+ geoType +"\",\"coordinates\":[[["+jsonCoords+"]"+ holes +"]]}},";
 					}
 					else{
-						shapeSection = shapeSection + "{\"type\":\"Feature\",\"id\":\""+areaCode+"\",\"properties\":{\"name\":\""+areaName+"\" },\"geometry\":{\"type\":\""+ geoType +"\",\"coordinates\":[["+jsonCoords+"]]}},";
+						shapeSection = shapeSection + "{\"type\":\"Feature\",\"id\":\""+areaCode+"\",\"properties\":{\"name\":\""+areaName+"\" ,\"center\":["+lat+","+lng+"]},\"geometry\":{\"type\":\""+ geoType +"\",\"coordinates\":[["+jsonCoords+"]]}},";
 					}
 				}
 	//			console.log(shapeData)
 				shapeSection = shapeSection.replace(/\(|\)/g, '')
 			}
+			
 				// Put coordinates in geoJson format
 			var prefix = "{\"type\":\"FeatureCollection\",\"features\":["
 			var postfix = "]}"
 			var shapeData = prefix + shapeSection + postfix
-			console.log(JSON.stringify(shapeData))
-			
+					
 			var downloadOption = $('input[name=inlineRadioOptions]:checked').val()
 			//console.log(downloadOption)
 			if(downloadOption == "geoJson"){
@@ -155,6 +167,7 @@ function DisplayQueryResults(e){
 			d.outerHTML = "<div style=\"height: 280px\" id=\"map\"></div>"
 			
 	//		var bounds = L.polygon(JSON.parse(shapeData).features[0].geometry.coordinates).getBounds()
+	//console.log(JSON.parse(shapeData).features[0].geometry.coordinates)
 	//		var center = bounds.getCenter()
 			lat = -6.5
 			lng = 54.5
@@ -164,7 +177,7 @@ function DisplayQueryResults(e){
 			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 			}).addTo(map);
 				
-			console.log(JSON.parse(shapeData))
+	//		console.log(JSON.parse(shapeData))
 				
 			L.geoJSON(JSON.parse(shapeData), {
 				onEachFeature: function (feature, layer) {
@@ -197,6 +210,8 @@ function download(filename, text) {
   var element = document.createElement('a');
   var blob = new Blob([text],{type: 'application/json'})
   var objectURL = window.URL.createObjectURL(blob)
+  //element.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(text));
+  //element.setAttribute('href', 'data:application/json;charset=utf-8,' + objectURL);
   element.setAttribute('href', objectURL);
   element.setAttribute('download', filename);
 
